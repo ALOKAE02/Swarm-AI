@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Acme Store (SwarmQA bench)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app"></div>
+
+<div id="cookie-banner" class="cookie">
+  <span>We use cookies to improve your experience and serve relevant ads.</span>
+  <button id="cookie-accept">Accept cookies</button>
+</div>
+
+<script src="app.js"></script>
+<script>
+  // Third-party ad script from another origin: its errors are NOT the app's bugs.
+  if (location.hostname === 'localhost') {
+    const s = document.createElement('script');
+    s.src = 'http://127.0.0.1:' + location.port + '/thirdparty.js';
+    document.head.appendChild(s);
+  }
+  // Benign Chrome warning that real apps emit constantly.
+  setTimeout(() => window.dispatchEvent(new ErrorEvent('error', {
+    message: 'ResizeObserver loop completed with undelivered notifications.'
+  })), 800);
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+.env
+auth.json
+findings.jsonl
+events.jsonl
+run_summary.json
+shots/
+bench_out/
+__pycache__/

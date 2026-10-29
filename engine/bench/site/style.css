@@ -1,0 +1,31 @@
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.5 system-ui, sans-serif; color: #1c1d21; background: #f6f6f4; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: #1c1d21; color: #fff; }
+header .brand { font-weight: 700; }
+nav .links { display: flex; gap: 14px; flex-wrap: wrap; }
+nav a { color: #d6d6d6; text-decoration: none; }
+nav a.active { color: #fff; text-decoration: underline; }
+#menu-toggle { display: none; background: none; color: #fff; border: 1px solid #555; padding: 4px 10px; }
+main { max-width: 960px; margin: 0 auto; padding: 24px 20px 160px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.card { background: #fff; border: 1px solid #e3e3df; border-radius: 10px; padding: 16px; }
+button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid #bbb; background: #fff; cursor: pointer; }
+button.primary { background: #2f5bea; color: #fff; border-color: #2f5bea; }
+input, select { font: inherit; padding: 6px 8px; border: 1px solid #bbb; border-radius: 6px; }
+form .row { margin: 10px 0; display: flex; flex-direction: column; gap: 4px; max-width: 360px; }
+.pricing-table { min-width: 720px; border-collapse: collapse; background: #fff; }
+.pricing-table td, .pricing-table th { border: 1px solid #ddd; padding: 10px 18px; }
+.compare-scroll { overflow-x: auto; margin-top: 24px; }
+.compare-scroll .wide { width: 1200px; padding: 12px; background: #eef; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal-box { background: #fff; padding: 24px; border-radius: 12px; min-width: 260px; }
+.cookie { position: fixed; left: 0; right: 0; bottom: 0; padding: 18px 20px; background: #fffbe6; border-top: 1px solid #e6d98c; display: flex; gap: 16px; align-items: center; justify-content: space-between; z-index: 40; }
+.cookie.hidden { display: none; }
+.post { background: #fff; border: 1px solid #e3e3df; border-radius: 8px; padding: 18px; margin: 10px 0; height: 80px; }
+footer { border-top: 1px solid #ddd; margin-top: 40px; padding-top: 16px; }
+.badge { background: #2f5bea; color: #fff; border-radius: 10px; padding: 0 8px; font-size: 13px; }
+@media (max-width: 700px) {
+  #menu-toggle { display: block; }
+  nav .links { display: none; }
+  nav.open .links { display: flex; flex-direction: column; position: absolute; top: 52px; right: 0; background: #1c1d21; padding: 12px 20px; z-index: 30; }
+}
