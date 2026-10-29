@@ -1,0 +1,4 @@
+.env
+shots/
+findings.jsonl
+__pycache__/
