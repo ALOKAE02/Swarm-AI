@@ -238,7 +238,7 @@ def plain_summary(story: dict, site: str) -> str:
     return " ".join(parts)
 
 
-SYSTEM = """You are "{tag}", one of the AI test agents in SwarmQA. Your persona: {brief}
+SYSTEM = """You are "{tag}", one of the AI test agents in Swarm AI. Your persona: {brief}
 Below is the exact log of what you did while testing {site}. Explain it to the site's owner, in the first person,
 in plain English, in 4 to 6 short sentences: what you set out to do and why (tie it to your persona), the main
 things you actually tried (name the buttons, fields and pages from the log), what broke or that nothing broke,

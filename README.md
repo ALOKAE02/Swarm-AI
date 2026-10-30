@@ -1,4 +1,4 @@
-# SwarmQA
+# Swarm AI
 
 **Break your website before your users do.** Paste a URL and a swarm of AI users attacks the live site: rage-clicking, typing hostile input, dropping the network, squeezing the screen, hitting Back at the worst moment. Every bug comes back with a screenshot, the exact steps to reproduce it, and a suggested fix written by **NVIDIA Nemotron 3 Ultra on Nebius Token Factory**, grounded in docs found by **Tavily**.
 
@@ -44,7 +44,7 @@ Full details (detectors, benchmark, CLI, hero-shot mode, public demo mode): [eng
 
 On a benchmark site with 12 planted bugs and realistic noise (ad-script errors, cookie banner, intentional scroll areas), 4 agents × 25 actions catch about 9 of 12 with zero false alarms, up from 2 of 12 with about 6 false alarms in our first version. With 60 actions per agent, 11.3 of 12. On a real production site it found a broken `/enquire-now` link.
 
-Fixes are **suggested patches** for a human to review, never auto-merged. Only point SwarmQA at sites you own or have permission to test: its agents really submit forms.
+Fixes are **suggested patches** for a human to review, never auto-merged. Only point Swarm AI at sites you own or have permission to test: its agents really submit forms.
 
 ## Team
 

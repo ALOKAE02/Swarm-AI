@@ -1,4 +1,4 @@
-"""SwarmQA web app: paste a URL, watch the swarm live, get fixes.
+"""Swarm AI web app: paste a URL, watch the swarm live, get fixes.
 
     python server.py                  # opens http://localhost:8800
     python server.py --port 9000 --no-browser
@@ -206,7 +206,7 @@ class App:
             target = target_for(url)
             if not target:
                 return 403, {"error": "This public demo only runs on the demo sites listed below. "
-                                      "Run SwarmQA on your own computer to test any site."}
+                                      "Run Swarm AI on your own computer to test any site."}
             url = target["url"]
             if not RATE.allow("run", QUOTA["runs_per_hour"]):
                 return 429, {"error": "The demo has hit its hourly limit of swarms. Try again in a little while."}
@@ -504,7 +504,7 @@ def main() -> None:
             stream.reconfigure(errors="replace")
         except Exception:
             pass
-    ap = argparse.ArgumentParser(description="SwarmQA web app")
+    ap = argparse.ArgumentParser(description="Swarm AI web app")
     ap.add_argument("--port", type=int, default=8800)
     ap.add_argument("--open", action="store_true", help="also open the app in a new browser tab")
     ap.add_argument("--no-browser", action="store_true", help=argparse.SUPPRESS)   # kept for old commands
@@ -530,7 +530,7 @@ def main() -> None:
     srv.daemon_threads = True
     url = f"http://localhost:{a.port}"
     key = "Nemotron key found" if os.getenv("NEBIUS_API_KEY") else "no NEBIUS_API_KEY: offline planner only"
-    print(f"SwarmQA is running at {url}  ({key}{', mock Ultra' if APP.fixer.mock else ''})")
+    print(f"Swarm AI is running at {url}  ({key}{', mock Ultra' if APP.fixer.mock else ''})")
     print("Open that address in your browser (or refresh the tab you already have). Ctrl+C to stop.")
     tv = APP.research.status()
     print(f"Tavily research: {'on, ' + str(tv['used_this_month']) + ' of ' + str(tv['cap']) + ' credits used this month' if tv['enabled'] else 'off (no TAVILY_API_KEY)'}")

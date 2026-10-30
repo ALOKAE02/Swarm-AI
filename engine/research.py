@@ -1,6 +1,6 @@
 """Tavily web research for fixes.
 
-Before Nemotron 3 Ultra writes a fix, SwarmQA searches the web with Tavily for
+Before Nemotron 3 Ultra writes a fix, Swarm AI searches the web with Tavily for
 documentation, known issues and answers that match the bug (MDN, framework docs,
 Stack Overflow, GitHub issues), and hands the best snippets to Ultra. The fix
 panel shows which sources were read and which ones Ultra says it used.
@@ -243,4 +243,4 @@ if __name__ == "__main__":
     print(f"{len(res['sources'])} sources ({'cached, 0 credits' if res['cached'] else str(res['credits']) + ' credit'}):")
     for s in res["sources"]:
         print(f"  [{s['n']}] {s['domain']}: {s['title']}")
-    print(f"Tavily credits used this month by SwarmQA: {r.used_this_month()} of cap {r.cap}")
+    print(f"Tavily credits used this month by Swarm AI: {r.used_this_month()} of cap {r.cap}")

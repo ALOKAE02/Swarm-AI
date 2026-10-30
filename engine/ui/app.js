@@ -1,4 +1,4 @@
-// SwarmQA web app: landing (/) and the app (/swarm). One tab, no build step.
+// Swarm AI web app: landing (/) and the app (/swarm). One tab, no build step.
 
 const COLORS = ['#d9363e', '#2563eb', '#0f7f58', '#b45309', '#7c3aed', '#0e7490', '#be185d', '#4d7c0f'];
 const TITLES = {
@@ -152,7 +152,7 @@ function setupPublic() {
           ${targets.map((t) => `<button type="button" class="chip" data-value="${esc(t.url)}" aria-pressed="${t.url === url.value}">${esc(t.label)}</button>`).join('')}
         </div>
       </div>
-      <p class="hint" id="public-note">This public demo runs on our own demo sites only, so nobody's site gets attacked by accident. Run SwarmQA on your computer to test any URL.</p>`);
+      <p class="hint" id="public-note">This public demo runs on our own demo sites only, so nobody's site gets attacked by accident. Run Swarm AI on your computer to test any URL.</p>`);
     $('.chips[data-name=target]').addEventListener('click', (e) => {
       const c = e.target.closest('.chip'); if (!c) return;
       setChip('target', c.dataset.value); url.value = c.dataset.value;
@@ -307,7 +307,7 @@ function onEvent(ev) {
   switch (ev.kind) {
     case 'hello':
       RUN.meta = ev.run; RUN.minutes = ev.run.opts?.minutes || 2; RUN.status = ev.run.status;
-      document.title = `SwarmQA: ${host(ev.run.url)}`;
+      document.title = `Swarm AI: ${host(ev.run.url)}`;
       if (ev.run.status !== 'running' && ev.run.ended) { RUN.ended = true; RUN.clock = { t: ev.run.ended - ev.run.started, at: performance.now() }; }
       renderHead(); break;
     case 'run_start': (ev.personas || []).forEach((_, i) => tile(i)); break;
@@ -688,7 +688,7 @@ function render() {
   $('#nav-home').hidden = app; $('#nav-app').hidden = !app;
   closeDrawer();
   if (!app) {
-    document.title = 'SwarmQA';
+    document.title = 'Swarm AI';
     if (SOURCE) { SOURCE.close(); SOURCE = null; RUN = null; }
     drawMotif(); revealOnScroll();
     if (location.hash) $(location.hash)?.scrollIntoView(); else scrollTo(0, 0);
@@ -696,7 +696,7 @@ function render() {
   }
   initSwarmPage();
   const id = new URLSearchParams(location.search).get('run');
-  if (id) showRun(id); else { document.title = 'SwarmQA: new swarm'; clearRun(); }
+  if (id) showRun(id); else { document.title = 'Swarm AI: new swarm'; clearRun(); }
 }
 
 document.addEventListener('click', (e) => {

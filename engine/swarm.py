@@ -1,4 +1,4 @@
-"""SwarmQA orchestrator.
+"""Swarm AI orchestrator.
 
     python swarm.py http://localhost:5173 --agents 6                    # Nano-driven swarm
     python swarm.py http://localhost:5173 --agents 8 --headed --tile    # hero-shot mode
@@ -113,7 +113,7 @@ async def run_swarm(url: str, agents: int = 4, headed: bool = False, tile: bool 
 
     personas = pick(agents)
     budget = f"{minutes} min" if minutes else f"{max_steps} actions/agent"
-    print(f"SwarmQA run {run_id}: {agents} agents on {url} | {budget} | "
+    print(f"Swarm AI run {run_id}: {agents} agents on {url} | {budget} | "
           f"planner: {'Nemotron Nano + heuristic fallback' if llm else 'heuristic'}")
     state.emit("run_start", url=url, agents=agents, personas=[p["name"] for p in personas],
                planner="nano" if llm else "heuristic")
@@ -199,7 +199,7 @@ def main() -> None:
             stream.reconfigure(errors="replace")
         except Exception:
             pass
-    ap = argparse.ArgumentParser(description="SwarmQA chaos engine")
+    ap = argparse.ArgumentParser(description="Swarm AI chaos engine")
     ap.add_argument("url", nargs="?", help="staging URL to attack (only sites you own or may test)")
     ap.add_argument("--agents", type=int, default=4)
     ap.add_argument("--steps", type=int, default=30, help="max actions per agent")

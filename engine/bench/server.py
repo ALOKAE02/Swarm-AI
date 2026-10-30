@@ -1,4 +1,4 @@
-"""SwarmQA benchmark target: a small but tricky single-page app with 12 planted
+"""Swarm AI benchmark target: a small but tricky single-page app with 12 planted
 bugs plus realistic noise (third-party script errors, favicon 404, benign
 ResizeObserver warning, intentional scroll containers, a cookie banner and a
 click-blocking modal).

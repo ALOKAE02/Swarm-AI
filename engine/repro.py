@@ -94,7 +94,7 @@ async def main() -> None:
             stream.reconfigure(errors="replace")
         except Exception:
             pass
-    ap = argparse.ArgumentParser(description="Replay / minimize / verify SwarmQA findings")
+    ap = argparse.ArgumentParser(description="Replay / minimize / verify Swarm AI findings")
     ap.add_argument("id", nargs="?", help="finding id, e.g. f_0007")
     ap.add_argument("--findings", default="findings.jsonl")
     ap.add_argument("--headed", action="store_true")

@@ -70,7 +70,7 @@ def finding_md(f: dict, patch: dict | None, base: str, heading: str = "##") -> s
     out = [f"{heading} [{sev}] {title}: {plain(f)[:110]}", ""]
     out.append(f"**Page:** `{route(f.get('page_url') or f.get('url'))}` on {urlparse(f.get('url') or '').netloc}  ")
     out.append(f"**Screen:** {str(f.get('viewport', '')).replace('x', ' × ')}  ")
-    out.append(f"**Found by:** the {f.get('persona', 'SwarmQA')} agent  ")
+    out.append(f"**Found by:** the {f.get('persona', 'Swarm AI')} agent  ")
     out.append(f"**Finding:** `{f.get('id')}`, {f.get('ts', '')}")
     out.append("")
     if f.get("shot_url"):
@@ -101,14 +101,14 @@ def finding_md(f: dict, patch: dict | None, base: str, heading: str = "##") -> s
             out.append("References found with Tavily:")
             out += [f"- [{s['title']}]({s['url']}){' (used for this fix)' if s['n'] in used else ''}" for s in srcs]
             out.append("")
-    out.append("_Reported by SwarmQA. Suggested patches are for review, not auto-merged._")
+    out.append("_Reported by Swarm AI. Suggested patches are for review, not auto-merged._")
     return "\n".join(out)
 
 
 def run_md(run, base: str) -> str:
     s = run.summary or {}
     when = time.strftime("%d %b %Y, %H:%M", time.localtime(run.started))
-    out = [f"# SwarmQA report: {run.url}", "",
+    out = [f"# Swarm AI report: {run.url}", "",
            f"{when}. {s.get('findings', len(run.findings))} bugs from {run.opts.get('agents')} agents in "
            f"{int(s.get('seconds', 0)) // 60}:{int(s.get('seconds', 0)) % 60:02d}, "
            f"{s.get('actions', '?')} actions across {s.get('pages_visited', '?')} "

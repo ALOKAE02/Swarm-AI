@@ -1,4 +1,4 @@
-# SwarmQA engine
+# Swarm AI engine
 
 A swarm of chaotic browser agents attacks a live web UI. **Nemotron Nano on Nebius Token Factory** plans each agent's next moves; detectors catch what breaks; every bug comes with a screenshot and a replayable repro.
 
@@ -52,7 +52,7 @@ Real costs from our runs: an 8-agent, 3-minute swarm on a live site made 63 Nano
 ## Tavily research
 
 Add `TAVILY_API_KEY=tvly-...` to `.env`. Then `python research.py` runs one real search (1 credit) and prints the sources, which checks the key.
-Credits are protected: basic search only, every query is cached in `runs/tavily_cache.json`, and SwarmQA stops searching at `TAVILY_MONTHLY_CAP` (default 1000 of the free 1,500 a month). The fix panel shows how many have been used this month.
+Credits are protected: basic search only, every query is cached in `runs/tavily_cache.json`, and Swarm AI stops searching at `TAVILY_MONTHLY_CAP` (default 1000 of the free 1,500 a month). The fix panel shows how many have been used this month.
 
 ## Public demo (share a link safely)
 
