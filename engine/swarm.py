@@ -41,7 +41,10 @@ class Config:
     storage_state: str | None = None
     tile: bool = False
     show_ui: bool = False
+    human: bool = False
     spread: bool = True
+    on_frame: object = None      # callable(dict) for live screencast frames
+    frame_fps: int = 6
 
 
 def tile_args(i: int, n: int, screen_w: int = 1920, screen_h: int = 1080) -> list[str]:
@@ -75,7 +78,10 @@ async def run_swarm(url: str, agents: int = 4, headed: bool = False, tile: bool 
                     include_third_party: bool = False, storage_state: str | None = None,
                     events_path: str | None = "events.jsonl",
                     summary_path: str | None = "run_summary.json", fresh: bool = False,
-                    page_budget: int = 10, show_ui: bool | None = None) -> list[Finding]:
+                    page_budget: int = 10, show_ui: bool | None = None,
+                    human: bool | None = None, listener=None, on_frame=None,
+                    state_ref: list | None = None, run_id: str | None = None,
+                    storage_dir: str | None = None) -> list[Finding]:
     # Lazy imports so --stub works without Playwright/OpenAI installed.
     from playwright.async_api import async_playwright
     from agent import Agent
@@ -87,12 +93,15 @@ async def run_swarm(url: str, agents: int = 4, headed: bool = False, tile: bool 
             if p and Path(p).exists():
                 Path(p).unlink()
     seed_ids_from(findings_path)
-    run_id = uuid.uuid4().hex[:6]
+    run_id = run_id or uuid.uuid4().hex[:6]
     cfg = Config(findings_path=findings_path, shots_dir=shots_dir, max_steps=max_steps, minutes=minutes,
                  page_budget=page_budget, seed=seed, detectors=parse_detectors(detectors),
                  include_third_party=include_third_party, storage_state=storage_state,
-                 tile=headed and tile, show_ui=headed if show_ui is None else show_ui)
-    state = SwarmState(url, run_id, events_path)
+                 tile=headed and tile, show_ui=headed if show_ui is None else show_ui,
+                 human=headed if human is None else human, on_frame=on_frame)
+    state = SwarmState(url, run_id, events_path, listener=listener)
+    if state_ref is not None:
+        state_ref.append(state)            # lets a server stop the run: state.stopped = True
 
     llm = None
     if use_llm:
@@ -199,7 +208,8 @@ def main() -> None:
     ap.add_argument("--tile", action="store_true", help="with --headed: tile windows on one screen")
     ap.add_argument("--screen", default="1920x1080", help="screen size for tiling, e.g. 2560x1440")
     ap.add_argument("--slowmo", type=int, default=0, help="ms delay per browser action (nicer on video)")
-    ap.add_argument("--no-ui", action="store_true", help="headed mode without cursor/badge/alarm overlay")
+    ap.add_argument("--no-ui", action="store_true", help="headed mode without the cursor/notification overlay")
+    ap.add_argument("--fast", action="store_true", help="headed mode without human-like motion (direct clicks)")
     ap.add_argument("--no-llm", action="store_true", help="heuristic planner only, no API calls")
     ap.add_argument("--llm-calls", type=int, default=400, help="hard cap on Nano calls per run")
     ap.add_argument("--detectors", default="all", help="all | core | comma list, e.g. console_error,xss")
@@ -226,7 +236,7 @@ def main() -> None:
         minutes=a.minutes, slowmo=a.slowmo, seed=a.seed, llm_calls=a.llm_calls, detectors=a.detectors,
         include_third_party=a.include_third_party, storage_state=a.storage_state,
         events_path=a.events, summary_path=a.summary, fresh=a.fresh, page_budget=a.page_budget,
-        show_ui=False if a.no_ui else None))
+        show_ui=False if a.no_ui else None, human=False if a.fast else None))
 
 
 if __name__ == "__main__":

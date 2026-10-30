@@ -23,6 +23,7 @@ BUG_TYPES = CORE_TYPES + (
     "blank_screen",      # page went white (app root emptied, no error)
     "unresponsive",      # main thread frozen for seconds, or tab crashed/hung
     "xss",               # hostile input executed as script
+    "broken_link",       # a first-party page the site links to returns 404/410
 )
 SEVERITIES = ("high", "medium", "low")
 

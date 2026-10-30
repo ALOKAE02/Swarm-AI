@@ -5,4 +5,6 @@ events.jsonl
 run_summary.json
 shots/
 bench_out/
+runs/
+.swarmqa-backup/
 __pycache__/

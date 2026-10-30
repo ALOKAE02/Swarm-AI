@@ -40,6 +40,7 @@ def expand(text) -> str:
 PERSONAS = [
     {
         "name": "impatient rage-clicker",
+        "tag": "Rage-clicker",
         "viewport": (1280, 800),
         "brief": "You are furious and impatient. Hammer primary buttons (buy, add, submit, save, generate) "
                  "with rage_click, open and close dialogs fast, never wait for loading.",
@@ -48,6 +49,7 @@ PERSONAS = [
     },
     {
         "name": "mobile thumb-tapper",
+        "tag": "Thumb-tapper",
         "viewport": (375, 812),
         "brief": "You are on a small phone. Open the menu, tap everything, scroll to the very bottom of long "
                  "pages, and resize between phone widths looking for content that spills off-screen.",
@@ -55,6 +57,7 @@ PERSONAS = [
     },
     {
         "name": "malicious form-filler",
+        "tag": "Form-filler",
         "viewport": (1280, 800),
         "brief": "You fill every field with hostile input ($XSS, $SQL, $LONG, $EMOJI, $EMPTY, $NULL, $NUM) "
                  "and submit. Search boxes and sign-up forms are your favourite targets.",
@@ -63,6 +66,7 @@ PERSONAS = [
     },
     {
         "name": "flaky-network commuter",
+        "tag": "Commuter",
         "viewport": (414, 896),
         "brief": "You are on a train with terrible signal. Go offline or slow, then submit forms, load more "
                  "content and click buttons while requests fail; then come back online.",
@@ -71,6 +75,7 @@ PERSONAS = [
     },
     {
         "name": "keyboard-only power user",
+        "tag": "Keyboard user",
         "viewport": (1024, 768),
         "brief": "You never touch the mouse. Use press with Tab, Enter, Space, Escape and ArrowDown to move "
                  "through and trigger everything, including closing dialogs with Escape repeatedly.",
@@ -79,6 +84,7 @@ PERSONAS = [
     },
     {
         "name": "window-resizer",
+        "tag": "Resizer",
         "viewport": (1440, 900),
         "brief": "You constantly resize between phone, tablet and ultrawide widths, clicking things in "
                  "between to see what breaks.",
@@ -86,6 +92,7 @@ PERSONAS = [
     },
     {
         "name": "curious explorer",
+        "tag": "Explorer",
         "viewport": (1366, 768),
         "brief": "You want to see every page. Follow links and menus to unvisited routes, toggle every "
                  "setting and checkbox, and press every button once.",
@@ -94,6 +101,7 @@ PERSONAS = [
     },
     {
         "name": "back-button spammer",
+        "tag": "Back-button",
         "viewport": (390, 844),
         "brief": "You navigate in, then hit back, forward and reload at the worst moments, especially right "
                  "after submitting or while things are loading.",

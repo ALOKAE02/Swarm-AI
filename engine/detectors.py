@@ -118,10 +118,10 @@ IGNORE = re.compile("|".join([
 SEVERITY = {
     "unhandled_promise": "high", "network_error": "high", "blank_screen": "high",
     "unresponsive": "high", "xss": "high", "layout_overflow": "medium",
-    "console_error": "medium", "broken_resource": "low",
+    "console_error": "medium", "broken_resource": "low", "broken_link": "medium",
 }
 PRIORITY = {"xss": 0, "unhandled_promise": 1, "unresponsive": 2, "blank_screen": 3,
-            "network_error": 4, "console_error": 5, "layout_overflow": 6, "broken_resource": 7}
+            "network_error": 4, "console_error": 5, "layout_overflow": 6, "broken_link": 6, "broken_resource": 7}
 
 _PREFIX = re.compile(r"^(uncaught\s*(\(in promise\))?\s*)?((\w*error|domexception)\s*:\s*)?", re.I)
 _URL = re.compile(r"https?://[^\s'\")]+")
@@ -140,13 +140,29 @@ def route(url: str) -> str:
 
 
 def bug_key(bug_type: str, message: str, selector: str = "", page_url: str = "", dom: str = "") -> tuple:
-    if bug_type == "layout_overflow":   # same element (selector + markup) = same bug on any page
-        return ("layout", selector, normalize(dom[:160])) if selector else ("layout", route(page_url))
+    if bug_type == "layout_overflow":   # same KIND of element = same bug: sibling cards, any page, any state
+        if not selector:
+            return ("layout", route(page_url))
+        return ("layout", re.sub(r":nth-of-type\(\d+\)", "", selector), element_signature(dom))
     if bug_type in ("blank_screen", "unresponsive", "xss"):
         return (bug_type, route(page_url))
+    if bug_type == "broken_link":
+        m = re.search(r"Page not found: (\S+)", message)
+        return ("broken_link", m.group(1) if m else normalize(message))
     if bug_type in ("network_error", "broken_resource"):
         return (bug_type, normalize(message))
     return ("js", normalize(message))   # console_error + unhandled_promise share a key space
+
+
+def element_signature(dom: str) -> str:
+    """'<button class="product-card is-selected" ...>' -> 'button.product-card' (state classes dropped)."""
+    m = re.match(r"\s*<([\w-]+)([^>]*)>", dom or "")
+    if not m:
+        return ""
+    cm = re.search(r'class="([^"]*)"', m.group(2))
+    classes = [c for c in (cm.group(1).split() if cm else [])
+               if not re.match(r"(is|has)-|active$|selected$|open$|focus", c)]
+    return ".".join([m.group(1).lower()] + sorted(classes))
 
 
 def site_base(host: str) -> str:
@@ -180,6 +196,9 @@ class Detectors:
         self.page = None
         self._queue: list[RawBug] = []
         self._offline_until = 0.0
+        self._last_js = 0.0
+        self._dead_doc = False                # a crash blanked this document; only a real load revives it
+        self.dead_urls: set[str] = set()      # first-party pages that answered 404/410
         self.had_content = False
 
     # ---- wiring --------------------------------------------------------
@@ -195,6 +214,7 @@ class Detectors:
         page.on("response", self._on_response)
         page.on("requestfailed", self._on_requestfailed)
         page.on("dialog", self._on_dialog)
+        page.on("domcontentloaded", lambda *_: setattr(self, "_dead_doc", False))
         page.on("crash", lambda *_: self._push("unresponsive", "Tab crashed (renderer process died)",
                                                severity="high", fatal=True))
 
@@ -221,6 +241,8 @@ class Detectors:
             return ""
 
     def _push(self, bug_type, message, stack="", selector="", dom="", severity=None, fatal=False):
+        if bug_type == "unhandled_promise" or (bug_type == "console_error" and severity == "high"):
+            self._last_js = time.time()       # a crash explains a white page: don't double-report it
         self._queue.append(RawBug(bug_type, message, stack, selector, dom,
                                   severity or SEVERITY.get(bug_type, "medium"), self._page_url(), fatal))
 
@@ -261,7 +283,12 @@ class Detectors:
                 return
             req = resp.request
             path = urlparse(url).path or "/"
-            if status >= 500:
+            if req.resource_type == "document" and status in (404, 410):
+                self.dead_urls.add(url.split("#")[0])
+                ref = (req.headers or {}).get("referer", "")
+                came = f", linked from {urlparse(ref).path or '/'}" if ref and self.first_party(ref) else ""
+                self._push("broken_link", f"Page not found: {path} returns {status}{came}")
+            elif status >= 500:
                 self._push("network_error", f"{req.method} {path} -> {status} (server error)")
             elif status == 404 and req.resource_type in ("image", "script", "stylesheet", "font", "media"):
                 if "favicon" not in path and "sqa-" not in path:
@@ -323,7 +350,11 @@ class Detectors:
                            severity="high", fatal=True)
                 probe = {}
         self._process_probe(probe)
-        if probe.get("visibleText", 99) < 3 and probe.get("media", 1) == 0 and self.had_content:
+        blankish = probe.get("visibleText", 99) < 3 and probe.get("media", 1) == 0
+        if blankish and time.time() - self._last_js <= 3:
+            self._dead_doc = True             # the crash took the page down with it
+        if (blankish and self.had_content and not self._dead_doc
+                and str(probe.get("url", "")).startswith("http")):
             await asyncio.sleep(1.2)           # give loading states a chance
             again = await self._probe() or {}
             if again.get("visibleText", 99) < 3 and again.get("media", 1) == 0:

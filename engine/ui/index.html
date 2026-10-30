@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#EEEEE7">
+<title>SwarmQA</title>
+<meta name="description" content="A swarm of AI users stress-tests your website and reports every bug with a screenshot, exact steps and a suggested fix.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231E4A38'/%3E%3Ccircle cx='22' cy='24' r='6' fill='%23EEEEE7'/%3E%3Ccircle cx='42' cy='24' r='6' fill='%23EEEEE7'/%3E%3Ccircle cx='32' cy='42' r='6' fill='%23EEEEE7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+<div class="frame-bar" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="wordmark" href="/" data-nav>SwarmQA</a>
+    <nav class="nav-links" id="nav-home" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#get">What you get</a>
+      <a class="btn btn-primary" href="/swarm" data-nav>Break your website</a>
+    </nav>
+    <div class="nav-app" id="nav-app" hidden>
+      <span class="model-status" id="model-status"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================ LANDING -->
+<main id="view-home" hidden>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <h1 class="display">Break your website before your users do.</h1>
+      <p class="body-lg">Paste a URL. A swarm of AI users rage-clicks, types junk, drops the network, and squeezes the screen on every viewport. Every bug comes back with a screenshot, the exact steps to reproduce, and a fix you can ship.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="/swarm" data-nav>Break your website</a>
+        <a class="btn btn-ghost btn-lg" href="#anatomy">See a sample report</a>
+      </div>
+    </div>
+    <svg class="swarm-motif" viewBox="0 0 520 440" aria-hidden="true" id="swarm-motif"></svg>
+  </section>
+
+  <section class="section wrap reveal" id="how" aria-labelledby="how-title">
+    <p class="label">How it works</p>
+    <h2 id="how-title" class="h2">Three steps, about three minutes.</h2>
+    <ol class="steps-row">
+      <li>
+        <span class="step-num">01</span>
+        <h3>Paste your URL</h3>
+        <p>Staging, preview or production. Choose how many agents and how long they get.</p>
+      </li>
+      <li>
+        <span class="step-num">02</span>
+        <h3>The swarm attacks</h3>
+        <p>Each agent has a personality: the rage-clicker, the phone user, the form-filler, the commuter on a dead connection. You watch every one of them live.</p>
+      </li>
+      <li>
+        <span class="step-num">03</span>
+        <h3>Get bugs and fixes</h3>
+        <p>Crashes, failed requests, blank screens, frozen tabs, broken links and layouts that spill off the screen, each with a suggested fix.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section wrap reveal" id="get" aria-labelledby="get-title">
+    <p class="label">What you get back</p>
+    <h2 id="get-title" class="h2">Evidence, not a vague bug ticket.</h2>
+    <div class="feature-grid">
+      <article class="card feature">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="8" width="30" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M5 15h30" stroke="currentColor" stroke-width="2.4"/><circle cx="26" cy="24" r="3.5" fill="currentColor"/></svg>
+        <h3>A screenshot of every failure</h3>
+        <p>Captured the instant the page broke, from the agent's own browser, at the screen size it was using.</p>
+      </article>
+      <article class="card feature">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M10 11h20M10 20h20M10 29h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5" cy="11" r="1.8" fill="currentColor"/><circle cx="5" cy="20" r="1.8" fill="currentColor"/><circle cx="5" cy="29" r="1.8" fill="currentColor"/></svg>
+        <h3>Exact steps to reproduce</h3>
+        <p>Replay them in a fresh browser to prove the bug is real, and shrink them to the shortest list that still breaks it.</p>
+      </article>
+      <article class="card feature">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 30l9-9 4 4 11-12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 13h6v6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Fixes written by Nemotron 3 Ultra</h3>
+        <p>Ultra reads the error, the page and the steps, explains the cause in plain words, and proposes the change.</p>
+      </article>
+      <article class="card feature">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M14 12l-8 8 8 8M26 12l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Real code diffs, if you share the source</h3>
+        <p>Point it at your project folder and the fix becomes a diff you can apply, verify by replaying, and undo.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section wrap reveal" id="anatomy" aria-labelledby="anatomy-title">
+    <p class="label">Anatomy of a bug report</p>
+    <h2 id="anatomy-title" class="h2">What lands on your desk.</h2>
+    <article class="card report report-showcase">
+      <div class="report-head">
+        <span class="sev high">High</span>
+        <h3>Crash after rage-clicking “Add to bag”</h3>
+      </div>
+      <p class="report-msg">The page went blank after the fourth fast click. <code>TypeError: Cannot read properties of undefined (reading 'sku')</code></p>
+      <div class="report-body">
+        <figure class="shot-placeholder" aria-label="Screenshot placeholder: the page has gone blank">
+          <div class="shot-chrome"><i></i><i></i><i></i><span>aangan.shop</span></div>
+          <div class="shot-blank">
+            <svg viewBox="0 0 20 24" aria-hidden="true"><path d="M2 2v17l4.5-4.3 3.2 7.3 3-1.3-3-7h6.3z" fill="#1E4A38" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="shot-tag">Rage-clicker</span>
+          </div>
+          <figcaption>Screenshot from the agent's browser, 1280 × 800</figcaption>
+        </figure>
+        <div>
+          <p class="label">Steps to reproduce</p>
+          <ol class="repro">
+            <li>Open the shop on a 1280 × 800 screen</li>
+            <li>Select “Handwoven Merino Wool Throw”</li>
+            <li>Click <b>Add to bag</b> 6 times, fast</li>
+          </ol>
+          <p class="label">Suggested fix <span class="mono muted">Nemotron 3 Ultra, 92% confident</span></p>
+          <pre class="diff"><span class="file">src/components/ProductPanel.jsx</span><span class="hunk">@@ -12,4 +12,6 @@</span><span class="ctx">   function onBuy() {</span><span class="del">-    const unit = product.units[cart.length]</span><span class="del">-    setCart((items) =&gt; [...items, unit])</span><span class="add">+    setCart((items) =&gt; {</span><span class="add">+      const unit = product.units[items.length]</span><span class="add">+      return unit ? [...items, unit] : items</span><span class="add">+    })</span><span class="ctx">   }</span></pre>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="models wrap reveal" aria-label="Models">
+    <p>Agents think with <span class="mono">Nemotron Nano</span>. Fixes are written by <span class="mono">Nemotron 3 Ultra</span>. Both run on Nebius Token Factory.</p>
+  </section>
+
+  <footer class="footer wrap">
+    <a class="wordmark" href="/" data-nav>SwarmQA</a>
+    <nav aria-label="Footer">
+      <a href="#how">How it works</a>
+      <a href="/swarm" data-nav>Break your website</a>
+      <a href="https://github.com/ALOKAE02/Swarm-AI">Source on GitHub</a>
+    </nav>
+    <p class="muted">© 2026 SwarmQA</p>
+  </footer>
+</main>
+
+<!-- ============================================================ APP -->
+<main id="view-swarm" class="app" hidden>
+  <section class="console-wrap">
+    <form class="card console" id="start-form" autocomplete="off" novalidate>
+      <h1 class="console-title">Point the swarm at a site</h1>
+      <div class="url-row">
+        <label class="sr" for="url">Website address</label>
+        <input id="url" class="input mono" type="text" inputmode="url" placeholder="https://staging.your-site.com" spellcheck="false" required>
+        <button class="btn btn-primary btn-lg" type="submit" id="start-btn">Start swarm</button>
+      </div>
+      <p class="form-error" id="start-error" role="alert" hidden></p>
+
+      <div class="chip-row">
+        <span class="label" id="lbl-agents">Agents</span>
+        <div class="chips" role="group" aria-labelledby="lbl-agents" data-name="agents">
+          <button type="button" class="chip mono" data-value="4" aria-pressed="false">4</button>
+          <button type="button" class="chip mono" data-value="6" aria-pressed="true">6</button>
+          <button type="button" class="chip mono" data-value="8" aria-pressed="false">8</button>
+        </div>
+      </div>
+      <div class="chip-row">
+        <span class="label" id="lbl-minutes">Duration</span>
+        <div class="chips" role="group" aria-labelledby="lbl-minutes" data-name="minutes">
+          <button type="button" class="chip" data-value="1" aria-pressed="false">1 min</button>
+          <button type="button" class="chip" data-value="2" aria-pressed="true">2 min</button>
+          <button type="button" class="chip" data-value="3" aria-pressed="false">3 min</button>
+        </div>
+      </div>
+      <div class="chip-row">
+        <span class="label" id="lbl-planner">Agents think with</span>
+        <div class="chips" role="group" aria-labelledby="lbl-planner" data-name="planner">
+          <button type="button" class="chip" data-value="nano" aria-pressed="true">Nemotron Nano</button>
+          <button type="button" class="chip" data-value="offline" aria-pressed="false">Offline rules</button>
+        </div>
+      </div>
+
+      <details class="source" id="source-box">
+        <summary>Have the source code? Get real code diffs</summary>
+        <label class="label" for="repo">Project folder on this computer</label>
+        <input id="repo" class="input mono" type="text" placeholder="C:\Users\you\projects\my-site" spellcheck="false">
+        <p class="hint">With it, Ultra reads the files behind each bug and writes a diff you can apply and verify. Without it, fixes are page-level suggestions.</p>
+      </details>
+
+      <p class="demo-row">Try it on a site built to break:
+        <button type="button" class="link" data-demo="http://localhost:5174/">Aangan demo shop</button>,
+        <button type="button" class="link" data-demo="http://localhost:8790/">bug benchmark</button>
+      </p>
+    </form>
+  </section>
+
+  <section class="results" id="results" aria-live="polite">
+    <div class="empty" id="empty">
+      <p>Your swarm's findings will appear here.</p>
+      <div id="history" hidden>
+        <p class="label">Recent runs</p>
+        <ol class="history-list" id="history-list"></ol>
+      </div>
+    </div>
+
+    <div class="run" id="run" hidden>
+      <div class="run-head">
+        <span class="run-url mono" id="run-url"></span>
+        <span class="pill" id="run-pill"></span>
+        <span class="run-actions" id="run-actions"></span>
+      </div>
+      <div class="stats" id="stats"></div>
+      <p class="banner" id="run-banner" hidden></p>
+      <div class="run-grid">
+        <section aria-labelledby="agents-title">
+          <div class="section-head">
+            <h2 class="label" id="agents-title">Agents</h2>
+            <span class="hint">Click an agent to see what it did, in its own words.</span>
+          </div>
+          <div class="tiles" id="tiles"></div>
+        </section>
+        <section aria-labelledby="bugs-title">
+          <div class="section-head">
+            <h2 class="label" id="bugs-title">Bugs <span class="mono" id="bugs-count">0</span></h2>
+          </div>
+          <ol class="bug-list" id="bug-list"></ol>
+          <p class="hint" id="bugs-empty">Nothing broken yet.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden>
+  <div class="drawer-inner" id="drawer-inner"></div>
+</aside>
+
+<template id="tile-tpl">
+  <button type="button" class="tile">
+    <span class="screen"><img alt=""><span class="screen-wait">Opening the page</span></span>
+    <span class="tile-foot"><span class="who"><i class="dot"></i><b class="name"></b></span><span class="where mono"></span></span>
+    <span class="doing"></span>
+    <span class="thinking"></span>
+  </button>
+</template>
+
+<script src="/ui/app.js" type="module"></script>
+</body>
+</html>

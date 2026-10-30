@@ -290,6 +290,8 @@ class NanoPolicy:
                 if not el:
                     continue
                 extra = {}
+                if do == "type" and el["kind"] not in TYPABLE:
+                    do = "click"                      # Nano asked to type into a button: click it instead
                 if do == "type":
                     extra = {"text": str(a.get("text", "")), "submit": bool(a.get("submit"))}
                 steps.append(to_step(do, el, **extra))

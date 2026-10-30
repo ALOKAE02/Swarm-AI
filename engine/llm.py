@@ -82,7 +82,7 @@ class LLM:
     call budget (protects credits) and token/cost accounting."""
 
     def __init__(self, model: str = NANO, max_concurrency: int = 8,
-                 max_calls: int | None = None, timeout: float = 30.0):
+                 max_calls: int | None = None, timeout: float = 30.0, thinking: bool | None = None):
         self.model = model
         self.client = async_client().with_options(timeout=timeout, max_retries=0)
         self.sem = asyncio.Semaphore(max_concurrency)
@@ -93,8 +93,9 @@ class LLM:
         self.last_error = ""
         # Nemotron 3 can emit reasoning before answering; we don't need it for
         # action planning, so ask for it off. Dropped automatically if rejected.
-        self._extra = ({"chat_template_kwargs": {"enable_thinking": False}}
-                       if os.getenv("NANO_THINKING", "off").lower() == "off" else None)
+        if thinking is None:
+            thinking = os.getenv("NANO_THINKING", "off").lower() != "off"
+        self._extra = {"chat_template_kwargs": {"enable_thinking": bool(thinking)}}
         self._json_mode = os.getenv("NANO_JSON_MODE", "0") == "1"
 
     @property

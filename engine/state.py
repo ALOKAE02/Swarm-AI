@@ -16,8 +16,10 @@ SKIP_PATH = re.compile(r"log-?out|sign-?out|logoff|/exit\b|unsubscribe|delete-ac
 
 
 class SwarmState:
-    def __init__(self, start_url: str, run_id: str, events_path: str | None = None):
+    def __init__(self, start_url: str, run_id: str, events_path: str | None = None, listener=None):
         self.start_url = start_url
+        self.listener = listener                  # callable(dict): live UI / server hook
+        self.stopped = False
         u = urlparse(start_url)
         self.origin = (u.scheme, u.netloc)
         self.run_id = run_id
@@ -31,6 +33,7 @@ class SwarmState:
         self.global_touches: Counter = Counter()  # element key -> times acted on, any route
         self.found_on: dict[str, set] = defaultdict(set)
         self.features: dict[str, dict] = {}       # url -> {"inputs": n, "buttons": n}
+        self.dead: set[str] = set()               # pages that 404: never send an agent there again
         self.selector_routes: dict[str, set] = defaultdict(set)   # selector -> routes it appears on
         self.findings: list = []
         self.actions = self.failed_actions = 0
@@ -97,7 +100,7 @@ class SwarmState:
         """Least-explored page TYPE first; personas that need forms or buttons
         get a pull towards pages already known to have them."""
         ex = self.normalize(exclude) if exclude else None
-        cands = [u for u in self.frontier if u != ex]
+        cands = [u for u in self.frontier if u != ex and u not in self.dead]
         if not cands:
             return None
 
@@ -106,8 +109,19 @@ class SwarmState:
             return (self.pattern_visits[self.frontier[u]] - bonus, self.visits[u], rng.random())
         return min(cands, key=key)
 
+    def mark_dead(self, urls) -> None:
+        for u in urls:
+            n = self.normalize(u)
+            if n:
+                self.dead.add(n)
+
+    def is_dead(self, url: str) -> bool:
+        n = self.normalize(url)
+        return bool(n) and n in self.dead
+
     def unvisited(self, limit: int = 8) -> list[str]:
-        items = sorted(self.frontier, key=lambda u: (self.pattern_visits[self.frontier[u]], self.visits[u]))
+        items = sorted((u for u in self.frontier if u not in self.dead),
+                       key=lambda u: (self.pattern_visits[self.frontier[u]], self.visits[u]))
         return items[:limit]
 
     # ---- coverage --------------------------------------------------------
@@ -122,10 +136,14 @@ class SwarmState:
 
     # ---- events / stats -------------------------------------------------
     def emit(self, kind: str, **data) -> None:
-        if not self.events_path:
-            return
-        append_jsonl(self.events_path, {"ts": now_iso(), "t": round(time.time() - self.t0, 2),
-                                        "run_id": self.run_id, "kind": kind, **data})
+        ev = {"ts": now_iso(), "t": round(time.time() - self.t0, 2), "run_id": self.run_id, "kind": kind, **data}
+        if self.events_path:
+            append_jsonl(self.events_path, ev)
+        if self.listener:
+            try:
+                self.listener(ev)
+            except Exception:
+                pass
 
     def summary(self, llm_stats: dict | None = None) -> dict:
         by_type, by_sev = Counter(), Counter()
